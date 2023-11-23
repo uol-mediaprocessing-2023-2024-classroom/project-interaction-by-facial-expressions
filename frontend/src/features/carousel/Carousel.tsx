@@ -23,8 +23,8 @@ const Carousel = () => {
     };
 
     return (
-            <>
-                <div className={styles.component}>
+            <div className={styles.component}>
+                <div className={styles.carousel}>
                     <div className={classNames(styles.preview, styles.left)}>
                         <div className={styles.content}>
                             <h3>Previous Photo</h3>
@@ -47,7 +47,7 @@ const Carousel = () => {
                 <div className={classNames(styles.undoButton, currentImage.isUnchanged ? styles.disabled : null)}
                      onClick={undo}>Undo
                 </div>
-            </>
+            </div>
     );
 };
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './ActionLog.less';
 
 const ActionLog = () => (
-        <>
+        <div>
             <h2>Action Log</h2>
             <div className={styles.component}>
                 <div className={styles.message}>
@@ -18,7 +18,7 @@ const ActionLog = () => (
                     <div>No command recognized</div>
                 </div>
             </div>
-        </>
+        </div>
 );
 
 export default ActionLog;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 const Help = () => (
-        <>
+        <div>
             <h2>Help</h2>
             <p>Action inputs by mimic and hand gestures:</p>
             <h3>Navigation:</h3>
@@ -20,7 +20,7 @@ const Help = () => (
                 <li>Apply invert: Thumbs down</li>
                 <li>Apply black and white: Peace sign</li>
             </ul>
-        </>
+        </div>
 );
 
 export default Help;

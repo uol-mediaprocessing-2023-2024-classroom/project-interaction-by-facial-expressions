@@ -50,6 +50,10 @@ export const carouselSlice = createSlice({
     name: 'carousel',
     initialState,
     reducers: {
+        selectImage: (state, action: PayloadAction<number>) => {
+            state.index = action.payload;
+            changeImages(state);
+        },
         previousImage: state => {
             state.index = mod(state.index - 1, state.images.length);
             changeImages(state);
@@ -73,6 +77,6 @@ export const carouselSlice = createSlice({
     }
 });
 
-export const {previousImage, nextImage, changeCurrentImage, resetCurrentImage} = carouselSlice.actions;
+export const {selectImage, previousImage, nextImage, changeCurrentImage, resetCurrentImage} = carouselSlice.actions;
 
 export default carouselSlice.reducer;

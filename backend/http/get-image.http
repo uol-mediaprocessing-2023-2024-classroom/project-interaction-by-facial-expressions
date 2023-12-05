@@ -1,0 +1,14 @@
+### GET request
+# Retrieve the image with the specified identifier.
+GET http://localhost:9000/images/a6a53142-eabf-469a-b10d-6c87e6776120
+Accept: application/json
+
+### GET request with size parameter
+# Retrieve the image with the specified identifier and resize it to the specified size (e.g., 300 pixels).
+GET http://localhost:9000/images/a6a53142-eabf-469a-b10d-6c87e6776120?size=300
+Accept: application/json
+
+### GET request with processed_image parameter
+# Retrieve the processed version of the image with the specified identifier.
+# GET http://localhost:9000/images/<image-id>?processed_image
+# Accept: application/json

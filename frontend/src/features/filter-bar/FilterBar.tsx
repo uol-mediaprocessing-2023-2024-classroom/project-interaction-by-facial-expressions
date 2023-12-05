@@ -1,38 +1,52 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, RootState} from '../../store';
-import {CarouselState, changeCurrentImage} from '../carousel/carouselSlice';
+import {useAppSelector} from '../../app/hooks';
+import {ProcessImageAction, selectImages, useProcessImageMutation} from '../api/apiSlice';
+import {selectCurrentIndex} from '../carousel/carouselSlice';
 import styles from './FilterBar.less';
 
-const BLUR_FILTER = 'blur';
-const INVERT_FILTER = 'invert';
-const BLACK_AND_WHITE_FILTER = 'black-and-white';
-
 const FilterBar = () => {
-    const {currentImage} = useSelector<RootState, CarouselState>(state => state.carousel);
-    const dispatch = useDispatch<AppDispatch>();
-
-    const apply = (action: string) => {
-        fetch('http://127.0.0.1:5000/filter', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({action, image: currentImage.originalData})
-        })
-                .then(response => response.json())
-                .then(data => dispatch(changeCurrentImage({data: data.image, filter: action})));
-    };
-
+    const [processImage] = useProcessImageMutation();
+    const currentIndex = useAppSelector(state => selectCurrentIndex(state));
+    const images = useAppSelector(state => selectImages(state));
+    const currentImage = images[currentIndex];
+    const isBlurButtonDisabled = currentImage?.appliedFilter == ProcessImageAction.BLUR_FILTER;
+    const isInvertButtonDisabled = currentImage?.appliedFilter == ProcessImageAction.INVERT_FILTER;
+    const isBlackAndWhiteButtonDisabled = currentImage?.appliedFilter == ProcessImageAction.BLACK_AND_WHITE_FILTER;
     return (
             <div className={styles.component}>
-                <div className={classNames(styles.button, currentImage.filter == BLUR_FILTER ? styles.disabled : null)}
-                     onClick={() => apply(BLUR_FILTER)}>Blur
+                <div className={classNames(styles.button, isBlurButtonDisabled ? styles.disabled : null)}
+                     onClick={() => {
+                         if (!isBlurButtonDisabled) {
+                             processImage({
+                                 id: currentImage.id,
+                                 action: ProcessImageAction.BLUR_FILTER
+                             });
+                         }
+                     }}>
+                    Blur
                 </div>
-                <div className={classNames(styles.button, currentImage.filter == INVERT_FILTER ? styles.disabled : null)}
-                     onClick={() => apply(INVERT_FILTER)}>Invert
+                <div className={classNames(styles.button, isInvertButtonDisabled ? styles.disabled : null)}
+                     onClick={() => {
+                         if (!isInvertButtonDisabled) {
+                             processImage({
+                                 id: currentImage.id,
+                                 action: ProcessImageAction.INVERT_FILTER
+                             });
+                         }
+                     }}>
+                    Invert
                 </div>
-                <div className={classNames(styles.button, currentImage.filter == BLACK_AND_WHITE_FILTER ? styles.disabled : null)}
-                     onClick={() => apply(BLACK_AND_WHITE_FILTER)}>Black and white
+                <div className={classNames(styles.button, isBlackAndWhiteButtonDisabled ? styles.disabled : null)}
+                     onClick={() => {
+                         if (!isBlackAndWhiteButtonDisabled) {
+                             processImage({
+                                 id: currentImage.id,
+                                 action: ProcessImageAction.BLACK_AND_WHITE_FILTER
+                             });
+                         }
+                     }}>
+                    Black and white
                 </div>
             </div>
     );

@@ -1,0 +1,4 @@
+### GET request
+# Retrieve a collection of images. This request returns information about all available images.
+GET http://localhost:9000/images
+Accept: application/json

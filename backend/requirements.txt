@@ -1,3 +1,5 @@
 opencv-python==4.8.1.78
 flask==3.0.0
 flask-cors==4.0.0
+flask-socketio==5.3.6
+python-socketio[client]==5.10.0

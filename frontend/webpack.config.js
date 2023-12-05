@@ -38,11 +38,12 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
     },
+    devtool: 'inline-source-map',
     devServer: {
         static: {
             directory: path.join(__dirname, 'dist'),
         },
         compress: true,
-        port: 9000,
+        port: 3000,
     },
 }

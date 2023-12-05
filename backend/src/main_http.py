@@ -1,9 +1,9 @@
 import os
 import time
-import uuid
 from io import BytesIO
 
 import cv2
+import numpy as np
 import socketio
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
@@ -120,29 +120,36 @@ def process_image():
 
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
+    maximum_image_width = 960
     mime_type_to_file_extension = {
-        'image/png': '.png',
-        'image/jpeg': '.jpeg'
+        'image/jpeg': '.jpeg',
+        'image/png': '.png'
     }
 
     def is_file_allowed(mimetype: str):
-        return mime_type_to_file_extension[mimetype] is not None
+        return mimetype in mime_type_to_file_extension
 
-    if 'file' not in request.files:
-        return 'No file part'
+    if len(request.files) == 0:
+        error_message = 'No file included in the request'
+        return jsonify({'error': error_message}), 400
 
     file = request.files['file']
-    if file.filename == '':
-        return 'No selected file'
-
     if file and is_file_allowed(file.mimetype):
-        image_id = str(uuid.uuid4())
-
         file_extension = mime_type_to_file_extension[file.mimetype]
+        image_id = image_repository.create(file_extension, file.mimetype)
         filename = image_id + file_extension
 
-        file.save(app.config['UPLOAD_FOLDER'] + filename)
-        image_repository.create(image_id, file_extension, file.mimetype)
+        content = file.read()
+        nparr = np.frombuffer(content, np.uint8)
+        original_image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        height, width, _ = original_image.shape
+
+        file_path = app.config['UPLOAD_FOLDER'] + filename
+        if width > maximum_image_width:
+            resized_image = image_scaler.resize(original_image, maximum_image_width)
+            cv2.imwrite(file_path, resized_image)
+        else:
+            cv2.imwrite(file_path, original_image)
 
         success_message = 'File uploaded successfully'
         return jsonify({'success': success_message}), 200

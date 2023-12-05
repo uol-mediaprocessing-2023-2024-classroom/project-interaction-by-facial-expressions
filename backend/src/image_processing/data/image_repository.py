@@ -1,5 +1,6 @@
 import json
 import os
+import uuid
 
 DATA_PATH = '/src/image_processing/data/images.json'
 
@@ -35,13 +36,15 @@ def update(image: dict):
             break
 
 
-def create(new_image_id: str, file_extension: str, mime_type: str):
+def create(file_extension: str, mime_type: str) -> str:
     images = find_all()
+    image_id = str(uuid.uuid4())
     images.append({
-        "id": new_image_id,
+        "id": image_id,
         "file_extension": file_extension,
         "mime_type": mime_type,
         "processed_image_id": None,
         "applied_filter": None
     })
     update_data(images)
+    return image_id

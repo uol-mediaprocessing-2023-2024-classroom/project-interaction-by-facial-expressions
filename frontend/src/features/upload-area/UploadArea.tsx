@@ -3,29 +3,38 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import {useState} from 'react';
 import {useDropzone} from 'react-dropzone';
-import {useUploadImageMutation} from '../api/apiSlice';
+import {useUploadImagesMutation} from '../api/apiSlice';
 import styles from './UploadArea.less';
 
 const UploadArea = () => {
-    const [uploadImage, {isLoading}] = useUploadImageMutation();
+    const [uploadImages, {isLoading}] = useUploadImagesMutation();
     const [uploadProgress, setUploadProgress] = useState(0);
-    const onDrop = (acceptedFiles: File[]) => {
-        if (acceptedFiles.length == 1) {
+    const onDrop = async (acceptedFiles: File[]) => {
+        if (acceptedFiles.length >= 1) {
+            let uploadLoaded = 0;
+            let uploadSize = 0;
+            for (let i = 0; i < acceptedFiles.length; i++) {
+                uploadSize += acceptedFiles[i].size;
+            }
             setUploadProgress(0);
-            const formData = new FormData();
-            formData.append('file', acceptedFiles[0]);
-            uploadImage({
-                formData,
-                onUploadProgress: (progressEvent: AxiosProgressEvent) =>
-                        setUploadProgress(Math.round((progressEvent.loaded / acceptedFiles[0].size) * 100))
+            uploadImages({
+                acceptedFiles,
+                onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+                    setUploadProgress(Math.round(((uploadLoaded + progressEvent.loaded) / uploadSize) * 100));
+
+                    if (progressEvent.loaded === progressEvent.total) {
+                        uploadLoaded += progressEvent.loaded;
+                    }
+                }
             });
         }
     };
+
     const {getRootProps, getInputProps, isDragActive, open} = useDropzone({
-        maxFiles: 1,
+        // maxFiles: 1, Which value should we set here?
         accept: {
-            'image/png': ['.png'],
-            'image/jpeg': ['.jpeg', '.jpg']
+            'image/jpeg': ['.jpeg', '.jpg'],
+            'image/png': ['.png']
         },
         noClick: true,
         disabled: isLoading,
@@ -45,8 +54,10 @@ const UploadArea = () => {
                                 isDragActive ?
                                         <div>Drop your photo here</div> :
                                         <>
-                                            <div className={styles.selectPhotoButton} onClick={open}>Select photo</div>
-                                            <p>Drag and drop a photo here or click on the button to select a photo</p>
+                                            <div className={styles.selectPhotosButton} onClick={open}>
+                                                Select photos
+                                            </div>
+                                            <p>Drag and drop photos here or click on the button to select photos</p>
                                             <em>(Only *.jpeg and *.png images will be accepted)</em>
                                         </>
                     }

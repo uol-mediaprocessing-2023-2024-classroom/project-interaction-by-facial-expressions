@@ -36,14 +36,18 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Images']
         }),
-        uploadImage: builder.mutation<void, {
-            formData: FormData,
+        uploadImages: builder.mutation<void, {
+            acceptedFiles: File[],
             onUploadProgress: (progressEvent: AxiosProgressEvent) => void
         }>({
             queryFn: async (arg, queryApi, extraOptions, baseQuery) => {
-                await axios.post(API_BASE_URL + '/upload-image', arg.formData, {
-                    onUploadProgress: arg.onUploadProgress
-                });
+                for (let i = 0; i < arg.acceptedFiles.length; i++) {
+                    const formData = new FormData();
+                    formData.append('file', arg.acceptedFiles[i]);
+                    await axios.post(API_BASE_URL + '/upload-image', formData, {
+                        onUploadProgress: arg.onUploadProgress
+                    });
+                }
                 return {data: undefined};
             },
             invalidatesTags: ['Images']
@@ -61,5 +65,5 @@ export const selectImages = createSelector(
 export const {
     useGetImagesQuery,
     useProcessImageMutation,
-    useUploadImageMutation
+    useUploadImagesMutation
 } = apiSlice;

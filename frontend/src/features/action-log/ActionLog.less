@@ -6,7 +6,10 @@
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto;
-    gap: 16px 16px;
-    margin-bottom: 8px;
+    gap: 16px;
+
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
   }
 }

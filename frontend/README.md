@@ -18,6 +18,6 @@ To start the frontend, execute the following command:
 yarn run start
 ```
 
-The frontend can then be opened at http://localhost:9000/ via the web browser.
+The frontend can then be opened at http://localhost:3000 via the web browser.
 
-State: 21.11.2023
+State: 05.12.2023

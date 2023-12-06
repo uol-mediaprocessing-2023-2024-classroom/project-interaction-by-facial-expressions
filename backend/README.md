@@ -10,14 +10,22 @@ pip install -r requirements.txt
 
 ## Start
 
-To start the backend, execute the following command:
+To start the backend, execute first the following command:
 
 ```shell 
-flask --app src/main --debug run
+flask --app src/main_socket run --host localhost --port 9001 --debug
 ```
 
-The backend can then be accessed at http://127.0.0.1:5000/ via Postman or directly with PyCharm.
+And then the following command:
 
-The http directory contains an http request to test the filter endpoint with PyCharm.
+```shell 
+flask --app src/main_http run --host localhost --port 9000 --debug
+```
 
-State: 21.11.2023
+<em>Please note that the starting order must be strictly complied to.</em>
+
+The http backend can then be accessed at http://localhost:9000 via Postman or directly with PyCharm.
+
+The http directory contains http requests to test the endpoints with PyCharm.
+
+State: 05.12.2023

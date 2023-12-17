@@ -15,7 +15,8 @@ const ReturnedFaceDataSchema = z.object({
         y: z.number(),
         w: z.number(),
         h: z.number()
-    })
+    }),
+    eyeShape: z.array(z.array(z.number()))
 });
 
 const Camera = () => {
@@ -55,10 +56,22 @@ const Camera = () => {
             navigator.mediaDevices.getUserMedia({video: true})
                     .then(_ => {
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        faceDataSet.forEach(({rectangle}) => {
+                        /**faceDataSet.forEach(({rectangle}) => {
                             ctx.strokeStyle = 'lime';
                             ctx.lineWidth = 2;
                             ctx.strokeRect(rectangle.x, rectangle.y, rectangle.w, rectangle.h);
+                        });**/
+                        faceDataSet.forEach(({rectangle, eyeShape}) => {
+                            ctx.strokeStyle = 'lime';
+                            ctx.lineWidth = 2;
+                            ctx.strokeRect(rectangle.x, rectangle.y, rectangle.w, rectangle.h);
+
+                            eyeShape.forEach(([x, y]) => {
+                                ctx.beginPath();
+                                ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                                ctx.fillStyle = 'red';  // Change color as needed
+                                ctx.fill();
+                            });
                         });
                     })
                     .catch(_ => {

@@ -6,8 +6,11 @@ import numpy as np
 from flask import Flask
 from flask_socketio import SocketIO
 
+from image_analysis.eye_detection.EyeDetector import EyeDetector
+
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins='http://localhost:3000')
+eye_detector = EyeDetector()
 
 
 @socketio.on('webcam-stream')
@@ -22,8 +25,10 @@ def handle_camera(message):
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
 
     response = []
+
     for (x, y, w, h) in [(int(x), int(y), int(w), int(h)) for (x, y, w, h) in faces]:
-        response.append({"rectangle": {"x": x, "y": y, "w": w, "h": h}})
+        shape = eye_detector.getEyeShape(faces, gray)
+        response.append({"rectangle": {"x": x, "y": y, "w": w, "h": h}, "eyeShape": shape})
 
     socketio.emit('canvas-update', response)
 

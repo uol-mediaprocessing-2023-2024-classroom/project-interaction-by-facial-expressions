@@ -1,4 +1,6 @@
 .idea
 backend/src/venv
+backend/images-processed
 frontend/dist
 frontend/node_modules
+ignore

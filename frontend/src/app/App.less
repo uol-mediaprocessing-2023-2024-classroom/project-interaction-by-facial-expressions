@@ -2,6 +2,23 @@
   text-align: center;
 }
 
+.section {
+  outline: 2px solid transparent;
+
+  &.focused {
+    box-shadow: 0 0 8px fuchsia;
+    outline-color: fuchsia;
+  }
+}
+
+.stickyTriggerArea {
+  z-index: 999;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: white;
+}
+
 .triggerArea {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

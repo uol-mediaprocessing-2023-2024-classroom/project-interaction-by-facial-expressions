@@ -1,3 +1,5 @@
+@import "../../common/variables";
+
 @grid-gap-size: 8px;
 @rows-shown: 2;
 @columns-in-a-row: 5;
@@ -6,8 +8,7 @@
 .component {
   overflow-y: scroll;
   width: 100%;
-  height: calc((@column-height + @grid-gap-size) * @rows-shown);
-  margin-bottom: 24px;
+  height: calc(@column-height * @rows-shown + @grid-gap-size);
 
   .gallery {
     display: grid;
@@ -15,12 +16,12 @@
     grid-template-rows: auto;
     gap: @grid-gap-size;
     width: 100%;
-    margin-bottom: 8px;
 
     .image {
       cursor: pointer;
       position: relative;
       height: @column-height;
+      font-size: 0; // ._.
 
       img {
         object-fit: cover;
@@ -37,24 +38,11 @@
           top: 0;
           left: 0;
           box-sizing: border-box;
-          border: 4px solid white;
-          box-shadow: 0 0 10px gray;
+          border: 4px solid @focus-color;
           width: 100%;
           height: 100%;
         }
       }
-    }
-  }
-
-  .loadMore {
-    display: flex;
-    justify-content: center;
-
-    .button {
-      cursor: pointer;
-      padding: 4px 8px;
-      background-color: black;
-      color: white;
     }
   }
 }

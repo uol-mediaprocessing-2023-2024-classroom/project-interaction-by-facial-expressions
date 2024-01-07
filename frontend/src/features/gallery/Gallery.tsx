@@ -44,12 +44,6 @@ const Gallery = () => {
                             ))
                     )}
                 </div>
-                {/*
-                Will we use a button to load more images?
-                <div className={styles.loadMore}>
-                    <div className={styles.button}>Load more</div>
-                </div>
-                */}
             </div>
     );
 };

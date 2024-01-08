@@ -82,7 +82,7 @@ const Camera = () => {
                             }
                         } = imageAnalysis;
 
-                        ctx.strokeStyle = 'green';
+                        ctx.strokeStyle = 'lime';
                         ctx.lineWidth = 2;
 
                         // Draw the bounding box

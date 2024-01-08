@@ -23,9 +23,9 @@ const ActionLog = () => {
     useEffect(() => {
         socket.on(ACTION_LOG_EVENT, (response) => {
             addActionLog(actionLogs => {
-                actionLogs.push(ReturnedActionLogSchema.parse(response));
-                setActionLogsLength(actionLogs.length);
-                return actionLogs;
+                const result = [...actionLogs, ReturnedActionLogSchema.parse(response)];
+                setActionLogsLength(result.length);
+                return result;
             });
         });
 

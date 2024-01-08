@@ -1,6 +1,4 @@
 .component {
-  margin-bottom: 24px;
-
   .carousel {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -60,6 +58,10 @@
     &.disabled {
       cursor: unset;
       background-color: gray;
+    }
+
+    &.focused {
+      text-decoration: underline;
     }
   }
 }

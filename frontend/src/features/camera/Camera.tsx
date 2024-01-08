@@ -9,12 +9,29 @@ const width = 480;
 const height = 360;
 const fps = 15;
 
-const ReturnedFaceDataSchema = z.object({
-    rectangle: z.object({
-        x: z.number(),
-        y: z.number(),
-        w: z.number(),
-        h: z.number()
+const ReturnedImageAnalysisSchema = z.object({
+    headPose: z.object({
+        direction: z.string(),
+        boundingBox: z.object({
+            width: z.number(),
+            height: z.number(),
+            minX: z.number(),
+            minY: z.number(),
+            centerX: z.number(),
+            centerY: z.number()
+        }),
+        leftEye: z.object({
+            x: z.number(),
+            y: z.number()
+        }),
+        rightEye: z.object({
+            x: z.number(),
+            y: z.number()
+        }),
+        nose: z.object({
+            x: z.number(),
+            y: z.number()
+        })
     })
 });
 
@@ -51,15 +68,63 @@ const Camera = () => {
                 return;
             }
 
-            const faceDataSet = ReturnedFaceDataSchema.array().parse(response);
+            const imageAnalysis = ReturnedImageAnalysisSchema.parse(response);
             navigator.mediaDevices.getUserMedia({video: true})
                     .then(_ => {
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        faceDataSet.forEach(({rectangle}) => {
-                            ctx.strokeStyle = 'lime';
-                            ctx.lineWidth = 2;
-                            ctx.strokeRect(rectangle.x, rectangle.y, rectangle.w, rectangle.h);
-                        });
+
+                        const {
+                            headPose: {
+                                boundingBox,
+                                leftEye,
+                                rightEye,
+                                nose
+                            }
+                        } = imageAnalysis;
+
+                        ctx.strokeStyle = 'green';
+                        ctx.lineWidth = 2;
+
+                        // Draw the bounding box
+                        ctx.beginPath();
+                        ctx.rect(
+                                boundingBox.minX,
+                                boundingBox.minY,
+                                boundingBox.width,
+                                boundingBox.height
+                        );
+                        ctx.stroke();
+
+                        // Draw the x axis
+                        ctx.strokeStyle = 'red';
+                        ctx.beginPath();
+                        ctx.moveTo(boundingBox.minX, boundingBox.centerY);
+                        ctx.lineTo(boundingBox.minX + boundingBox.width, boundingBox.centerY);
+                        ctx.stroke();
+
+                        // Draw the y axis
+                        ctx.beginPath();
+                        ctx.moveTo(boundingBox.centerX, boundingBox.minY);
+                        ctx.lineTo(boundingBox.centerX, boundingBox.minY + boundingBox.height);
+                        ctx.stroke();
+
+                        // Draw the circle of the left eye
+                        ctx.beginPath();
+                        ctx.arc(leftEye.x, leftEye.y, 4, 0, 2 * Math.PI, false);
+                        ctx.fillStyle = 'white';
+                        ctx.fill();
+
+                        // Draw the circle of the right eye
+                        ctx.beginPath();
+                        ctx.arc(rightEye.x, rightEye.y, 4, 0, 2 * Math.PI, false);
+                        ctx.fillStyle = 'white';
+                        ctx.fill();
+
+                        // Draw the circle of the nose
+                        ctx.beginPath();
+                        ctx.arc(nose.x, nose.y, 4, 0, 2 * Math.PI, false);
+                        ctx.fillStyle = 'white';
+                        ctx.fill();
                     })
                     .catch(_ => {
                         ctx.clearRect(0, 0, canvas.width, canvas.height);

@@ -6,7 +6,7 @@ export interface ManualModeSwitchState {
 }
 
 const initialState: ManualModeSwitchState = {
-    isChecked: false
+    isChecked: true
 };
 
 export const manualModeSwitchSlice = createSlice({

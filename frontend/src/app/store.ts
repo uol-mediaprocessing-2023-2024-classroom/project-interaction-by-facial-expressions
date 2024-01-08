@@ -1,11 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
 import {apiSlice} from '../features/api/apiSlice';
 import carouselReducer from '../features/carousel/carouselSlice';
+import filterBarReducer from '../features/filter-bar/filterBarSlice';
 import manualModeSwitchReducer from '../features/manual-mode-switch/manualModeSwitchSlice';
 
 export const store = configureStore({
     reducer: {
         carousel: carouselReducer,
+        filterBar: filterBarReducer,
         manualModeSwitch: manualModeSwitchReducer,
         [apiSlice.reducerPath]: apiSlice.reducer
     },

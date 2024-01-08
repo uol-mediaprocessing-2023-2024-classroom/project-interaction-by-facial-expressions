@@ -1,14 +1,21 @@
 import {AxiosProgressEvent} from 'axios';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
+import {z} from 'zod';
+import {EYE_BLINK_EVENT, socket} from '../../common/socket';
 import {useUploadImagesMutation} from '../api/apiSlice';
 import styles from './UploadArea.less';
+
+const ReturnedEyeBlinkEventSchema = z.object({
+    which: z.string()
+});
 
 const UploadArea = () => {
     const [uploadImages, {isLoading}] = useUploadImagesMutation();
     const [uploadProgress, setUploadProgress] = useState(0);
+    const selectPhotosButtonRef = useRef<HTMLDivElement>(null);
     const onDrop = async (acceptedFiles: File[]) => {
         if (acceptedFiles.length >= 1) {
             let uploadLoaded = 0;
@@ -40,6 +47,23 @@ const UploadArea = () => {
         disabled: isLoading,
         onDrop
     });
+
+    useEffect(() => {
+        const listener = (response: any) => {
+            const eyeBlinkEvent = ReturnedEyeBlinkEventSchema.parse(response);
+            if (eyeBlinkEvent.which === 'both-eyes-closed') {
+                // selectPhotosButtonRef.current?.click();
+                // TODO: Warning from Chrome: File chooser dialog can only be shown with a user activation.
+            }
+        };
+
+        socket.on(EYE_BLINK_EVENT, listener);
+
+        return () => {
+            socket.off(EYE_BLINK_EVENT, listener);
+        };
+    }, []);
+
     return (
             <div className={classNames(styles.component)}>
                 <div className={styles.uploadArea} {...getRootProps()}>
@@ -54,10 +78,9 @@ const UploadArea = () => {
                                 isDragActive ?
                                         <div>Drop your photo here</div> :
                                         <>
-                                            <div className={styles.selectPhotosButton} onClick={open}>
+                                            <div className={styles.selectPhotosButton} onClick={open} ref={selectPhotosButtonRef}>
                                                 Select photos
                                             </div>
-                                            <p>Drag and drop photos here or click on the button to select photos</p>
                                             <em>(Only *.jpeg and *.png images will be accepted)</em>
                                         </>
                     }

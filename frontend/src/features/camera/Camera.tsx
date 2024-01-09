@@ -190,6 +190,9 @@ const Camera = () => {
                         height={height}
                 />
                 <canvas className={styles.canvas} ref={canvasRef}/>
+                {!hasWebcamBeenReactivated &&
+                        <div className={styles.reactivatedComponent}></div>
+                }
             </div>
     );
 };

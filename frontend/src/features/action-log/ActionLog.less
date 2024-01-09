@@ -1,15 +1,29 @@
 .component {
   overflow-y: scroll;
-  max-height: 240px;
+  height: 310px;
+  padding: 20px 20px 20px 30px;
+  border-radius: 24px;
+  background: #F5F5F5;
+  box-shadow: 9px 9px 16px 0 rgba(163, 177, 198, 0.16) inset, -9px -9px 16px 0px #ffffff inset;
+
 
   .message {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto;
     gap: 16px;
+    font-size: 14px;
 
     &:not(:last-child) {
       margin-bottom: 8px;
     }
   }
+}
+
+.backgroundBox {
+  height: 310px;
+  padding: 20px 20px 20px 30px;
+  border-radius: 24px;
+  background: #F5F5F5;
+  box-shadow: 9px 9px 16px 0px rgba(163, 177, 198, 0.16) inset, -9px -9px 16px 0px #ffffff inset;
 }

@@ -31,6 +31,7 @@ const App = () => {
         uploadAreaSection,
         gallerySection
     ];
+    const [isNavigationFloating, setIsNavigationFloating] = useState(false);
 
     useEffect(() => {
         const listener = (response: any) => {
@@ -58,8 +59,21 @@ const App = () => {
         });
     }, [siteMapIndex]);
 
+    useEffect(() => {
+        const eventListener = () => {
+            if (navigationSection.current == null) {
+                return;
+            }
+            setIsNavigationFloating(window.scrollY + 1 > navigationSection.current.offsetTop);
+        };
+        window.addEventListener('scroll', eventListener);
+        return () => {
+            window.removeEventListener('scroll', eventListener);
+        };
+    }, []);
+
     return (
-            <>
+            <div className={styles.app}>
                 <div className={styles.header} ref={header}>
                     <h1>Interaction by Facial Expressions</h1>
                     {isLoading ?
@@ -71,9 +85,13 @@ const App = () => {
                 </div>
                 {!isLoading ?
                         <>
-                            <div className={styles.shadow}/>
                             <section
-                                    className={classNames(styles.section, {[styles.focused]: siteMapIndex === 0}, styles.stickyTriggerArea)}
+                                    className={classNames(
+                                            styles.section,
+                                            {[styles.focused]: siteMapIndex === 0},
+                                            styles.stickyTriggerArea,
+                                            {[styles.shadow]: isNavigationFloating}
+                                    )}
                                     ref={navigationSection}>
                                 <div className={styles.triggerArea}>
                                     <Help/>
@@ -96,7 +114,7 @@ const App = () => {
                             {/*<ManualModeSwitch/>*/}
                         </> : null
                 }
-            </>
+            </div>
     );
 };
 

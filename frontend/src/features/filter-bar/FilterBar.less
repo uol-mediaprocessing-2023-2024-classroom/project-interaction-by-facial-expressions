@@ -1,3 +1,5 @@
+@import "../../common/variables.less";
+
 .component {
   position: absolute;
   top: 0;
@@ -8,9 +10,11 @@
 
   .button {
     cursor: pointer;
-    padding: 4px 8px;
-    background-color: black;
-    color: white;
+    margin-left: 8px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    background-color: @accent-color;
+    color: #5b5b5b;
 
     &:not(:last-of-type) {
       margin-right: 8px;
@@ -22,6 +26,7 @@
     }
 
     &.focused {
+      transform: scale(1.1);
       text-decoration: underline;
     }
   }

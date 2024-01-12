@@ -2,14 +2,20 @@
   position: relative;
   overflow: hidden;
   border-radius: 24px;
-  background-color: black;
   font-size: 0;
-}
 
-.canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 480px;
-  height: 360px;
+  .backdrop, .canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 480px;
+    height: 360px;
+  }
+
+  &, .backdrop {
+    background-color: #5b5b5b;
+    background-image: url("camera-icon.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 }

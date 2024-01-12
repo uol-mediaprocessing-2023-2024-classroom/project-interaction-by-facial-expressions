@@ -1,10 +1,13 @@
+@import "./common/variables.less";
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  margin: 16px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
+  background-color: #f5f5f5;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
 h1, h2, h3, p {
@@ -12,23 +15,32 @@ h1, h2, h3, p {
 }
 
 h1 {
-  font-size: 32px;
   margin-bottom: 20px;
+  line-height: normal;
+  text-shadow: 0 0 16px #bff8f9;
+  font-size: 32px;
+  font-weight: 400;
+  color: @accent-color;
 }
 
 h2 {
+  padding-left: 30px;
+  margin-bottom: 8px;
   font-size: 24px;
-  margin-bottom: 12px;
+  font-weight: 500;
+  color: #5b5b5b;
 }
 
 h3 {
-  font-size: 20px;
   margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
 }
 
 p {
-  font-size: 16px;
   margin-bottom: 4px;
+  font-size: 14px;
 }
 
 ul {
@@ -36,4 +48,10 @@ ul {
   margin-block-end: 8px;
   padding: unset;
   padding-inline-start: 24px;
+  font-size: 12px;
+  color: #333333;
+
+  li {
+    padding: 5px 0 10px 0;
+  }
 }

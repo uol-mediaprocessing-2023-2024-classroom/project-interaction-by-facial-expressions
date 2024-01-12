@@ -1,7 +1,9 @@
+@import "../../common/variables.less";
+
 .component {
-  border: 2px dashed black;
-  box-sizing: border-box;
+  border: 2px dashed #b1b1b1;
   height: 240px;
+  background-color: rgba(150, 150, 150, 0.1);
 
   .uploadArea {
     display: flex;
@@ -14,10 +16,13 @@
     .selectPhotosButton {
       cursor: pointer;
       margin-bottom: 8px;
-      border-radius: 4px;
+      box-shadow: 0 0 23.8px 2px @accent-color;
+      border-radius: 16px;
       padding: 16px 64px;
-      background-color: black;
-      color: white;
+      background: #f7f7f7;
+      backdrop-filter: blur(20px);
+      text-transform: uppercase;
+      color: @accent-color;
     }
 
     .progressBar {
@@ -37,6 +42,12 @@
         color: white;
         transition: width 100ms;
       }
+    }
+
+    .hint {
+      padding-top: 30px;
+      font-size: 14px;
+      color: #333333;
     }
   }
 }

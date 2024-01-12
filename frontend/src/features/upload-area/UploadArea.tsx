@@ -81,7 +81,7 @@ const UploadArea = () => {
                                             <div className={styles.selectPhotosButton} onClick={open} ref={selectPhotosButtonRef}>
                                                 Select photos
                                             </div>
-                                            <em className={styles.uploadText}>(Only *.jpeg and *.png images will be accepted)</em>
+                                            <em className={styles.hint}>(Only *.jpeg and *.png images will be accepted)</em>
                                         </>
                     }
                 </div>

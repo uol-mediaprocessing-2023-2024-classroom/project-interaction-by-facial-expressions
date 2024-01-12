@@ -11,12 +11,12 @@
   height: calc(@column-height * @rows-shown + @grid-gap-size);
 
   .gallery {
-    background-color: white;
     display: grid;
     grid-template-columns: repeat(@columns-in-a-row, 1fr);
     grid-template-rows: auto;
     gap: @grid-gap-size;
     width: 100%;
+    background-color: white;
 
     .image {
       cursor: pointer;

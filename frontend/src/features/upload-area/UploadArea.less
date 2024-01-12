@@ -1,7 +1,9 @@
+@import "../../common/variables.less";
+
 .component {
+  height: 240px;
   border: 2px dashed #b1b1b1;
   box-sizing: border-box;
-  height: 240px;
   background-color: rgba(150, 150, 150, 0.1);
 
   .uploadArea {
@@ -18,10 +20,10 @@
       padding: 16px 64px;
       border-radius: 16px;
       background: #F7F7F7;
-      box-shadow: 0 0 23.8px 2px #AFD2D3;
+      box-shadow: 0 0 23.8px 2px @accent-color;
       backdrop-filter: blur(20px);
       text-transform: uppercase;
-      color: #AFD2D3;
+      color: @accent-color;
     }
 
     .progressBar {
@@ -47,6 +49,6 @@
 
 .uploadText {
   padding-top: 30px;
-  color: #333333;
   font-size: 14px;
+  color: #333333;
 }

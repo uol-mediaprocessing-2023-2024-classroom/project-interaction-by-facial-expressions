@@ -2,29 +2,20 @@
   position: relative;
   overflow: hidden;
   border-radius: 24px;
-  background-color: #5B5B5B;
-  background-image: url("camera-icon.svg");
-  background-repeat: no-repeat;
-  background-position: center;
   font-size: 0;
+
+  &, .reactivated {
+    background-color: #5B5B5B;
+    background-image: url("camera-icon.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 }
 
-.canvas {
+.canvas, .component .reactivated {
   position: absolute;
   top: 0;
   left: 0;
   width: 480px;
   height: 360px;
-}
-
-.reactivatedComponent {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 480px;
-  height: 360px;
-  background-color: #5B5B5B;
-  background-image: url("camera-icon.svg");
-  background-repeat: no-repeat;
-  background-position: center;
 }

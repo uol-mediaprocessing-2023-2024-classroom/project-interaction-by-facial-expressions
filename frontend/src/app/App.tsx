@@ -71,6 +71,7 @@ const App = () => {
                 </div>
                 {!isLoading ?
                         <>
+                            <div className={styles.shadow}/>
                             <section
                                     className={classNames(styles.section, {[styles.focused]: siteMapIndex === 0}, styles.stickyTriggerArea)}
                                     ref={navigationSection}>

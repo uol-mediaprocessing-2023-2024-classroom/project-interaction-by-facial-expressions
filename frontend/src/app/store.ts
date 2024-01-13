@@ -3,9 +3,11 @@ import {apiSlice} from '../features/api/apiSlice';
 import carouselReducer from '../features/carousel/carouselSlice';
 import filterBarReducer from '../features/filter-bar/filterBarSlice';
 import manualModeSwitchReducer from '../features/manual-mode-switch/manualModeSwitchSlice';
+import appReducer from './appSlice';
 
 export const store = configureStore({
     reducer: {
+        app: appReducer,
         carousel: carouselReducer,
         filterBar: filterBarReducer,
         manualModeSwitch: manualModeSwitchReducer,

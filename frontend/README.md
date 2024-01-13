@@ -20,4 +20,6 @@ yarn run start
 
 The frontend can then be opened at http://localhost:3000 via the web browser.
 
-State: 05.12.2023
+**The Prototype was developed with Chrome. It is therefore strongly recommended to open it under Chrome.**
+
+State: 13.01.2024

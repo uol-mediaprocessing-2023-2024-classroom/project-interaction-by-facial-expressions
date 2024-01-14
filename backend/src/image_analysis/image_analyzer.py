@@ -6,6 +6,7 @@ import mediapipe as mp
 from flask_socketio import SocketIO
 
 from .eye_blink_detector import detect_eye_blink, BOTH_EYES_CLOSED, LEFT_EYE_CLOSED, RIGHT_EYE_CLOSED
+from .face_emotion_detector import detect_face_emotion
 from .head_pose_detector import detect_head_pose, HEAD_LOOKS_LEFT, HEAD_LOOKS_RIGHT, HEAD_LOOKS_UP, HEAD_LOOKS_DOWN, \
     HEAD_LOOKS_FORWARD
 from .utils.Debouncer import Debouncer
@@ -17,6 +18,7 @@ face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, refin
 
 head_pose_debouncer = Debouncer(limit=15)
 eye_blink_debouncer = Debouncer(limit=10)
+face_emotion_debouncer = Debouncer(limit=10)
 
 
 def analyze_image(socketio: SocketIO, image: cv2.typing.MatLike) -> dict:
@@ -25,12 +27,14 @@ def analyze_image(socketio: SocketIO, image: cv2.typing.MatLike) -> dict:
 
     results = face_mesh.process(image)
 
+    face_emotion_result = detect_face_emotion(image)
     head_pose_result = detect_head_pose(image, results)
     handle_head_pose(socketio, head_pose_result['direction'])
     handle_eye_blink(socketio, detect_eye_blink(image, results))
 
     return {
-        'headPose': head_pose_result
+        'headPose': head_pose_result,
+        'faceEmotion': face_emotion_result
     }
 
 
@@ -76,3 +80,30 @@ def handle_eye_blink(socketio: SocketIO, result: Union[None, str]):
             socketio.emit('eye-blink', {'which': result})
 
     eye_blink_debouncer(result, eye_blink_event)
+
+def handle_face_emotion(socketio: SocketIO, result: Union[None, str]):
+    if result is None:
+        return
+
+    message = None
+    if result is 'angry':
+        message = 'You look angry'
+    elif result is 'disgust':
+        message = 'You look disgusted'
+    elif result is 'fear':
+        message = 'You look afraid'
+    elif result is 'happy':
+        message = 'You look happy'
+    elif result is 'sad':
+        message = 'You look sad'
+    elif result is 'surprise':
+        message = 'You look surprised'
+    elif result is 'neutral':
+        message = 'You look neutral'
+
+    def face_emotion_event():
+        if message is not None:
+            socketio.emit('action-log', {'timestamp': time.time(), 'message': message})
+            socketio.emit('face-emotion', {'emotion': result})
+
+    face_emotion_debouncer(result, face_emotion_event)

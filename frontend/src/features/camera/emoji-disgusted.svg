@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <title>emoji_disgusted</title>
+ <g class="layer">
+  <title>Layer 1</title>
+  <ellipse cx="91" cy="155" fill="#f5f5f5" id="ear_left" rx="63" ry="64" stroke="#afd2d3" stroke-dasharray="null" stroke-width="5"/>
+  <ellipse cx="409.5" cy="154" fill="#f5f5f5" id="ear_right" rx="63" ry="64" stroke="#afd2d3" stroke-dasharray="null" stroke-width="5"/>
+  <ellipse cx="100.5" cy="164.5" fill="#afd2d3" id="bg_ear_left" rx="43" ry="42.5" stroke="#afd2d3" stroke-dasharray="null"/>
+  <ellipse cx="397.5" cy="167" fill="#afd2d3" id="svg_11" rx="43" ry="42.5" stroke="#afd2d3" stroke-dasharray="null"/>
+ </g>
+ <g class="layer">
+  <title>head</title>
+  <ellipse cx="245.5" cy="274" fill="#f5f5f5" id="base" rx="172.5" ry="167" stroke="#afd2d3" stroke-width="5"/>
+  <ellipse cx="244" cy="359.5" fill="#afd2d3" id="bg_mouth" rx="76" ry="54.5" stroke="#afd2d3" stroke-dasharray="null"/>
+  <ellipse cx="242" cy="316" fill="#5b5b5b" id="svg_12" rx="27" ry="17" stroke="#5b5b5b" stroke-dasharray="null"/>
+  <ellipse cx="135.5" cy="320.5" fill="#ffaaaa" id="blush_left" rx="37" ry="16" stroke="#5b5b5b" stroke-dasharray="null" stroke-linecap="round" stroke-opacity="null" stroke-width="0"/>
+  <ellipse cx="349.5" cy="319" fill="#ffaaaa" id="blush_right" rx="37" ry="16" stroke="#5b5b5b" stroke-dasharray="null" stroke-linecap="round" stroke-opacity="null" stroke-width="0"/>
+ </g>
+ <g class="layer" display="inline">
+  <title>eyes</title>
+  <line fill="none" fill-opacity="null" id="right_eye_overline" stroke="#5b5b5b" stroke-dasharray="null" stroke-linecap="round" stroke-opacity="null" stroke-width="10" x1="305.5" x2="353.5" y1="244" y2="244">ghtght</line>
+  <line fill="none" fill-opacity="null" id="left_eye_overline" stroke="#5b5b5b" stroke-dasharray="null" stroke-linecap="round"  stroke-opacity="null" stroke-width="10" transform="matrix(1, 0, 0, 1, 0, 0)" x1="135.5" x2="183.5" y1="241" y2="241"/>
+  <line fill="none" fill-opacity="null" id="left_eye_underline" stroke="#5b5b5b" stroke-dasharray="null" stroke-linecap="round" stroke-opacity="null" stroke-width="10" x1="135" x2="183" y1="305" y2="305"/>
+  <ellipse cx="160" cy="274.5" fill="#5b5b5b" id="eye_left" rx="31" ry="33.5" stroke="#5b5b5b" stroke-dasharray="null"/>
+  <ellipse cx="330.5" cy="275.5" fill="#5b5b5b" id="eye_right" rx="31" ry="33.5" stroke="#5b5b5b" stroke-dasharray="null" transform="matrix(1, 0, 0, 1, 0, 0)"/>
+  <ellipse cx="160" cy="264.5" fill="#ffffff" id="highlight_eye_left" rx="19" ry="17.5" stroke="#ffffff" stroke-dasharray="null" transform="matrix(1, 0, 0, 1, 0, 0)"/>
+  <ellipse cx="330.5" cy="266" fill="#ffffff" id="highlight_eye_r" rx="19" ry="18" stroke="#ffffff" stroke-dasharray="null">ght</ellipse>
+  <line fill="none" fill-opacity="null" id="right_eye_underline" stroke="#5b5b5b" stroke-dasharray="null" stroke-linecap="round" stroke-opacity="null" stroke-width="10" x1="306.5" x2="354.5" y1="305" y2="305"/>
+ </g>
+ <g class="layer">
+  <title>eyebrows</title>
+  <path d="m148.79,204.99l33.86,12.97l0,0c4.43,1.7 6.32,6.34 4.21,10.36c-2.11,4.03 -7.41,5.91 -11.84,4.22l-33.86,-12.97l0,0c-4.43,-1.7 -6.32,-6.34 -4.21,-10.36c2.11,-4.03 7.41,-5.91 11.84,-4.22z" fill="#5b5b5b" fill-opacity="null" id="eyebrow_left" stroke="#5b5b5b" stroke-dasharray="null" stroke-linecap="round" stroke-opacity="null" transform="matrix(1, 0, 0, 1, 0, 0)"/>
+  <path d="m303.04,207.47l34.75,0l0,0c4.56,0 8.24,3.65 8.24,8.16c0,4.51 -3.69,8.16 -8.24,8.16l-34.75,0l0,0c-4.56,0 -8.24,-3.65 -8.24,-8.16c0,-4.51 3.69,-8.16 8.24,-8.16z" fill="#5b5b5b" fill-opacity="null" id="eyebrow_right" stroke="#5b5b5b" stroke-dasharray="null" stroke-linecap="round" stroke-opacity="null" transform="rotate(-27.2055, 320.414, 215.634)"/>
+ </g>
+ <g class="layer">
+  <title>mouth</title>
+  <path d="m258.16,398.28l0,0c-16.5,0 -29.88,-12.98 -29.88,-29c0,-16.02 13.38,-29 29.88,-29l0,0c-9.4,6.85 -14.94,17.59 -14.94,29c0,11.41 5.53,22.15 14.94,29z" fill="#5b5b5b" fill-opacity="null" id="mouth" stroke="#5b5b5b" stroke-dasharray="null" stroke-linecap="round" stroke-opacity="null" transform="rotate(90.6512, 243.224, 369.275)"/>
+ </g>
+</svg>

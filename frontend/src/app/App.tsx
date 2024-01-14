@@ -86,30 +86,28 @@ const App = () => {
                 {!isLoading ?
                         <>
                             <section
-                                    className={classNames(
-                                            styles.section,
-                                            {[styles.focused]: siteMapIndex === 0},
-                                            styles.stickyTriggerArea,
-                                            {[styles.shadow]: isNavigationFloating}
-                                    )}
+                                    className={classNames(styles.section, styles.sticky, {[styles.shadow]: isNavigationFloating})}
                                     ref={navigationSection}>
-                                <div className={styles.triggerArea}>
+                                <div className={classNames(styles.content, styles.navigation, {[styles.focused]: siteMapIndex === 0})}>
                                     <Help/>
                                     <Camera/>
                                     <ActionLog/>
                                 </div>
                             </section>
-                            <section className={classNames(styles.section, {[styles.focused]: siteMapIndex === 1})}
-                                     ref={carouselSection}>
-                                <Carousel/>
+                            <section className={styles.section} ref={carouselSection}>
+                                <div className={classNames(styles.content, {[styles.focused]: siteMapIndex === 1})}>
+                                    <Carousel/>
+                                </div>
                             </section>
-                            <section className={classNames(styles.section, {[styles.focused]: siteMapIndex === 2})}
-                                     ref={uploadAreaSection}>
-                                <UploadArea/>
+                            <section className={styles.section} ref={uploadAreaSection}>
+                                <div className={classNames(styles.content, {[styles.focused]: siteMapIndex === 2})}>
+                                    <UploadArea/>
+                                </div>
                             </section>
-                            <section className={classNames(styles.section, {[styles.focused]: siteMapIndex === 3})}
-                                     ref={gallerySection}>
-                                <Gallery/>
+                            <section className={styles.section} ref={gallerySection}>
+                                <div className={classNames(styles.content, {[styles.focused]: siteMapIndex === 3})}>
+                                    <Gallery/>
+                                </div>
                             </section>
                             {/*<ManualModeSwitch/>*/}
                         </> : null

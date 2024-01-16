@@ -1,15 +1,22 @@
+import cv2
 from deepface import DeepFace
 
-backends = ['opencv', 'ssd', 'dlib', 'mtcnn', 'retinaface', 'mediapipe', 'yolov8', 'yunet', 'fastmtcnn']
+EMOTION_ANGRY = 'angry'
+EMOTION_DISGUST = 'disgust'
+EMOTION_FEAR = 'fear'
+EMOTION_HAPPY = 'happy'
+EMOTION_SAD = 'sad'
+EMOTION_SURPRISE = 'surprise'
+EMOTION_NEUTRAL = 'neutral'
 
-#Possible emotions:  angry, disgust, fear, happy, sad, surprise, neutral
 
-def detect_face_emotion(img):
+def detect_face_emotion(image: cv2.typing.MatLike) -> str:
     try:
-        deepface_result = DeepFace.analyze(img, actions=['emotion'], enforce_detection=False,
-                                           detector_backend=backends[5])  # 5 is MediaPipe
+        deepface_result = DeepFace.analyze(image, actions=['emotion'], enforce_detection=False,
+                                           detector_backend='opencv', align=False, silent=True)
+        # Possible emotions: angry, disgust, fear, happy, sad, surprise, neutral
         emotion = deepface_result[0]['dominant_emotion'][:]
         return emotion
 
     except Exception as e:
-        print(f"Error analyzing face: {e}")
+        print(f"Error analyzing facial attributes: {e}")

@@ -1,8 +1,9 @@
+import * as classNames from 'classnames';
 import * as React from 'react';
 import {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import Webcam from 'react-webcam';
 import {z} from 'zod';
-import {CANVAS_UPDATE_EVENT, socket, WEBCAM_STREAM_EVENT, FACE_EMOTION_EVENT} from '../../common/socket';
+import {CANVAS_UPDATE_EVENT, FACE_EMOTION_EVENT, socket, WEBCAM_STREAM_EVENT} from '../../common/socket';
 import styles from './Camera.less';
 
 const width = 480;
@@ -34,7 +35,7 @@ const ReturnedImageAnalysisSchema = z.object({
         })
     })
 });
-const ReturnedFaceEmotionEventSchema = z.object({
+const ReturnedFaceEmotionSchema = z.object({
     emotion: z.string()
 });
 
@@ -43,6 +44,7 @@ const Camera = () => {
     const webcamRef = useRef<Webcam>(null);
     const [hasWebcamBeenReactivated, setHasWebcamBeenReactivated] = useState(false);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [currentEmotion, setCurrentEmotion] = useState('neutral');
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
@@ -182,33 +184,10 @@ const Camera = () => {
         return () => clearInterval(intervalId);
     }, [checkCameraAccess]);
 
-    const [currentEmoji, setCurrentEmoji] = useState('emoji-neutral.svg');
     useEffect(() => {
         const listener = (response: any) => {
-            const faceEmotionEvent = ReturnedFaceEmotionEventSchema.parse(response);
-            const detectedEmotion = faceEmotionEvent.emotion
-            switch (detectedEmotion) {
-                case 'angry':
-                    setCurrentEmoji('emoji-angry.svg');
-                    break;
-                case 'disgusted':
-                    setCurrentEmoji('emoji-disgusted.svg');
-                    break;
-                case 'fear':
-                    setCurrentEmoji('emoji-fear.svg');
-                    break;
-                case 'happy':
-                    setCurrentEmoji('emoji-neutral.svg');
-                    break;
-                case 'sad':
-                    setCurrentEmoji('emoji-sad.svg');
-                    break;
-                case 'surprised':
-                    setCurrentEmoji('emoji-surprised.svg');
-                    break;
-                default:
-                    setCurrentEmoji('emoji-neutral.svg');
-            }
+            const faceEmotionEvent = ReturnedFaceEmotionSchema.parse(response);
+            setCurrentEmotion(faceEmotionEvent.emotion);
         };
         socket.on(FACE_EMOTION_EVENT, listener);
 
@@ -228,9 +207,19 @@ const Camera = () => {
                         height={height}
                 />
                 <canvas className={styles.canvas} ref={canvasRef}/>
-                {!hasWebcamBeenReactivated && <div className={styles.backdrop}></div>}
-                <div className={styles.emoji}></div>
-                {/*<div className={styles.emoji} style={{ backgroundImage: `url(${currentEmoji})` }}></div>*/}
+                <div className={classNames(
+                        styles.emoji,
+                        {[styles.angry]: currentEmotion === 'angry'},
+                        {[styles.disgust]: currentEmotion === 'disgust'},
+                        {[styles.fear]: currentEmotion === 'fear'},
+                        {[styles.happy]: currentEmotion === 'happy'},
+                        {[styles.sad]: currentEmotion === 'sad'},
+                        {[styles.surprise]: currentEmotion === 'surprise'},
+                        {[styles.neutral]: currentEmotion === 'neutral'}
+                )}></div>
+                {!hasWebcamBeenReactivated &&
+                        <div className={styles.backdrop}></div>
+                }
             </div>
     );
 };

@@ -1,8 +1,9 @@
+import * as classNames from 'classnames';
 import * as React from 'react';
 import {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import Webcam from 'react-webcam';
 import {z} from 'zod';
-import {CANVAS_UPDATE_EVENT, socket, WEBCAM_STREAM_EVENT} from '../../common/socket';
+import {CANVAS_UPDATE_EVENT, FACE_EMOTION_EVENT, socket, WEBCAM_STREAM_EVENT} from '../../common/socket';
 import styles from './Camera.less';
 
 const width = 480;
@@ -34,12 +35,16 @@ const ReturnedImageAnalysisSchema = z.object({
         })
     })
 });
+const ReturnedFaceEmotionSchema = z.object({
+    emotion: z.string()
+});
 
 const Camera = () => {
     const [webcamKey, setWebcamKey] = useState(0);
     const webcamRef = useRef<Webcam>(null);
     const [hasWebcamBeenReactivated, setHasWebcamBeenReactivated] = useState(false);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [currentEmotion, setCurrentEmotion] = useState('neutral');
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
@@ -179,6 +184,18 @@ const Camera = () => {
         return () => clearInterval(intervalId);
     }, [checkCameraAccess]);
 
+    useEffect(() => {
+        const listener = (response: any) => {
+            const faceEmotionEvent = ReturnedFaceEmotionSchema.parse(response);
+            setCurrentEmotion(faceEmotionEvent.emotion);
+        };
+        socket.on(FACE_EMOTION_EVENT, listener);
+
+        return () => {
+            socket.off(FACE_EMOTION_EVENT, listener);
+        };
+    }, []);
+
     return (
             <div className={styles.component}>
                 <Webcam
@@ -190,7 +207,19 @@ const Camera = () => {
                         height={height}
                 />
                 <canvas className={styles.canvas} ref={canvasRef}/>
-                {!hasWebcamBeenReactivated && <div className={styles.backdrop}></div>}
+                <div className={classNames(
+                        styles.emoji,
+                        {[styles.angry]: currentEmotion === 'angry'},
+                        {[styles.disgust]: currentEmotion === 'disgust'},
+                        {[styles.fear]: currentEmotion === 'fear'},
+                        {[styles.happy]: currentEmotion === 'happy'},
+                        {[styles.sad]: currentEmotion === 'sad'},
+                        {[styles.surprise]: currentEmotion === 'surprise'},
+                        {[styles.neutral]: currentEmotion === 'neutral'}
+                )}></div>
+                {!hasWebcamBeenReactivated &&
+                        <div className={styles.backdrop}></div>
+                }
             </div>
     );
 };

@@ -15,7 +15,47 @@
   &, .backdrop {
     background-color: #5b5b5b;
     background-image: url("camera-icon.svg");
+    background-size: 91px 75px;
     background-repeat: no-repeat;
     background-position: center;
+  }
+
+  .emoji {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 80px;
+    height: 80px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: background 300ms;
+
+    &.angry {
+      background-image: url("emoji-angry.svg");
+    }
+
+    &.disgust {
+      background-image: url("emoji-disgusted.svg");
+    }
+
+    &.fear {
+      background-image: url("emoji-fear.svg");
+    }
+
+    &.happy {
+      background-image: url("emoji-happy.svg");
+    }
+
+    &.sad {
+      background-image: url("emoji-sad.svg");
+    }
+
+    &.surprise {
+      background-image: url("emoji-surprised.svg");
+    }
+
+    &.neutral {
+      background-image: url("emoji-neutral.svg");
+    }
   }
 }

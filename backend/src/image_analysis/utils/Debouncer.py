@@ -4,7 +4,7 @@ class Debouncer:
         self.counter = 0
         self.last_value = None
 
-    def __call__(self, value, fn, *args, **kwargs):
+    def __call__(self, fn, value='', *args, **kwargs):
         if value == self.last_value:
             self.counter += 1
         else:

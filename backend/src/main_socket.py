@@ -17,7 +17,8 @@ def handle_camera(message):
     image_bytes = base64.b64decode(base64_data)
     opencv_image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
     response = image_analyzer.analyze_image(socketio, opencv_image)
-    socketio.emit('canvas-update', response)
+    if response is not None:
+        socketio.emit('canvas-update', response)
 
 
 @socketio.on('action-log-intern')

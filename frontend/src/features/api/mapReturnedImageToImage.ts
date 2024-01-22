@@ -1,5 +1,5 @@
 import {API_BASE_URL} from './apiSlice';
-import {ReturnedImage} from './ReturnedImage';
+import {ReturnedImage} from '../../common/types/ReturnedImage';
 
 const determineUrl = (image: ReturnedImage) => {
     const baseUrl = `${API_BASE_URL}/images/${image.id}`;

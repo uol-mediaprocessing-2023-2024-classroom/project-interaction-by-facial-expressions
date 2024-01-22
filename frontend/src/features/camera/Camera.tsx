@@ -2,42 +2,16 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import Webcam from 'react-webcam';
-import {z} from 'zod';
-import {CANVAS_UPDATE_EVENT, FACE_EMOTION_EVENT, socket, WEBCAM_STREAM_EVENT} from '../../common/socket';
+import {SocketEvent} from '../../common/enums/SocketEvent';
+import {useSocketEventHook} from '../../common/hooks/useSocketEventHook';
+import {ReturnedFaceEmotionSchema} from '../../common/schemas/ReturnedFaceEmotionSchema';
+import {ReturnedImageAnalysisSchema} from '../../common/schemas/ReturnedImageAnalysisSchema';
+import {socket} from '../../common/socket';
 import styles from './Camera.less';
 
 const width = 480;
 const height = 360;
 const fps = 15;
-
-const ReturnedImageAnalysisSchema = z.object({
-    headPose: z.object({
-        direction: z.string(),
-        boundingBox: z.object({
-            width: z.number(),
-            height: z.number(),
-            minX: z.number(),
-            minY: z.number(),
-            centerX: z.number(),
-            centerY: z.number()
-        }),
-        leftEye: z.object({
-            x: z.number(),
-            y: z.number()
-        }),
-        rightEye: z.object({
-            x: z.number(),
-            y: z.number()
-        }),
-        nose: z.object({
-            x: z.number(),
-            y: z.number()
-        })
-    })
-});
-const ReturnedFaceEmotionSchema = z.object({
-    emotion: z.string()
-});
 
 const Camera = () => {
     const [webcamKey, setWebcamKey] = useState(0);
@@ -58,11 +32,11 @@ const Camera = () => {
         const intervalId = setInterval(() => {
             const data = webcamRef.current?.getScreenshot();
             if (data && hasWebcamBeenReactivated) {
-                socket.emit(WEBCAM_STREAM_EVENT, data);
+                socket.emit(SocketEvent.WEBCAM_STREAM, data);
             }
         }, 1000 / fps);
 
-        socket.on(CANVAS_UPDATE_EVENT, response => {
+        socket.on(SocketEvent.CANVAS_UPDATE, response => {
             const canvas = canvasRef.current;
             if (canvas == null) {
                 return;
@@ -137,7 +111,7 @@ const Camera = () => {
         });
 
         return () => {
-            socket.off(CANVAS_UPDATE_EVENT);
+            socket.off(SocketEvent.CANVAS_UPDATE);
             clearInterval(intervalId);
         };
     }, [hasWebcamBeenReactivated]);
@@ -184,17 +158,13 @@ const Camera = () => {
         return () => clearInterval(intervalId);
     }, [checkCameraAccess]);
 
-    useEffect(() => {
-        const listener = (response: any) => {
-            const faceEmotionEvent = ReturnedFaceEmotionSchema.parse(response);
-            setCurrentEmotion(faceEmotionEvent.emotion);
-        };
-        socket.on(FACE_EMOTION_EVENT, listener);
-
-        return () => {
-            socket.off(FACE_EMOTION_EVENT, listener);
-        };
-    }, []);
+    useSocketEventHook(
+            SocketEvent.FACE_EMOTION,
+            (response: any) => {
+                const faceEmotionEvent = ReturnedFaceEmotionSchema.parse(response);
+                setCurrentEmotion(faceEmotionEvent.emotion);
+            }
+    );
 
     return (
             <div className={styles.component}>

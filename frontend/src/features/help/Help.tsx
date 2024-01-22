@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {selectCurrentSection} from '../../app/appSlice';
 import {useAppSelector} from '../../app/hooks';
-import {Section} from '../../common/types/Section';
+import {Section} from '../../common/enums/Section';
 import styles from '../help/Help.less';
 
 const Help = () => {

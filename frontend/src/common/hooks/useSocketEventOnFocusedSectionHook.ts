@@ -7,7 +7,7 @@ export const useSocketEventOnFocusedSectionHook = (
     socketEvent: string,
     effect: (response: any) => void,
     dependencies: ReadonlyArray<unknown> = [],
-    sections: Section[] = []
+    sectionsToFocusOn: Section[] = []
 ) => {
     const currentSection = useAppSelector(state => selectCurrentSection(state));
     const isSectionFocused = useAppSelector(state => selectIsSectionFocused(state));
@@ -15,7 +15,7 @@ export const useSocketEventOnFocusedSectionHook = (
     useSocketEventHook(
         socketEvent,
         (response: any) => {
-            if (!(sections.some(section => section === currentSection) && isSectionFocused)) {
+            if (!(sectionsToFocusOn.some(section => section === currentSection) && isSectionFocused)) {
                 return;
             }
 

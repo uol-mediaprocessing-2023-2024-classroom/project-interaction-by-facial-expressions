@@ -15,6 +15,7 @@ import Camera from '../features/camera/Camera';
 import Carousel from '../features/carousel/Carousel';
 import Gallery from '../features/gallery/Gallery';
 import Help from '../features/help/Help';
+import SettingsMenu from '../features/settings-menu/SettingsMenu';
 import UploadArea from '../features/upload-area/UploadArea';
 import styles from './App.less';
 import {selectIsSectionFocused, setCurrentSection, setIsSectionFocused} from './appSlice';
@@ -166,6 +167,7 @@ const App = () => {
                                 </div>
                             </section>
                             {/*<ManualModeSwitch/>*/}
+                            <SettingsMenu/>
                         </> : null
                 }
             </div>

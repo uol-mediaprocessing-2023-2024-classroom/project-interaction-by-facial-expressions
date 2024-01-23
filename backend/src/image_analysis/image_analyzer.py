@@ -22,7 +22,7 @@ eye_blink_debouncer = Debouncer(limit=10)
 face_emotion_debouncer = Debouncer(limit=10)
 
 
-def analyze_image(socketio: SocketIO, image: cv2.typing.MatLike) -> Union[None, dict]:
+def analyze_image(socketio: SocketIO, image: cv2.typing.MatLike, face_detector_backend: str) -> Union[None, dict]:
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     image_height, image_width, _ = image.shape
 
@@ -35,7 +35,7 @@ def analyze_image(socketio: SocketIO, image: cv2.typing.MatLike) -> Union[None, 
 
     handle_head_pose(socketio, head_pose_result['direction'])
     handle_eye_blink(socketio, detect_eye_blink(image, results))
-    face_emotion_debouncer(lambda: handle_face_emotion(socketio, detect_face_emotion(image)))
+    face_emotion_debouncer(lambda: handle_face_emotion(socketio, detect_face_emotion(image, face_detector_backend)))
 
     return {
         'headPose': head_pose_result,

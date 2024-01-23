@@ -1,16 +1,14 @@
 import {AxiosProgressEvent} from 'axios';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import {useEffect, useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import {useDropzone} from 'react-dropzone';
-import {z} from 'zod';
-import {EYE_BLINK_EVENT, socket} from '../../common/socket';
+import {EyeBlinkEvent} from '../../common/enums/EyeBlinkEvent';
+import {SocketEvent} from '../../common/enums/SocketEvent';
+import {useSocketEventHook} from '../../common/hooks/useSocketEventHook';
+import {ReturnedEyeBlinkEventSchema} from '../../common/schemas/ReturnedEyeBlinkEventSchema';
 import {useUploadImagesMutation} from '../api/apiSlice';
 import styles from './UploadArea.less';
-
-const ReturnedEyeBlinkEventSchema = z.object({
-    which: z.string()
-});
 
 const UploadArea = () => {
     const [uploadImages, {isLoading}] = useUploadImagesMutation();
@@ -48,21 +46,16 @@ const UploadArea = () => {
         onDrop
     });
 
-    useEffect(() => {
-        const listener = (response: any) => {
-            const eyeBlinkEvent = ReturnedEyeBlinkEventSchema.parse(response);
-            if (eyeBlinkEvent.which === 'both-eyes-closed') {
-                // selectPhotosButtonRef.current?.click();
-                // TODO: Warning from Chrome: File chooser dialog can only be shown with a user activation.
+    useSocketEventHook(
+            SocketEvent.EYE_BLINK,
+            (response: any) => {
+                const eyeBlinkEvent = ReturnedEyeBlinkEventSchema.parse(response);
+                if (eyeBlinkEvent.which === EyeBlinkEvent.BOTH) {
+                    // selectPhotosButtonRef.current?.click();
+                    // TODO: Warning from Chrome: File chooser dialog can only be shown with a user activation.
+                }
             }
-        };
-
-        socket.on(EYE_BLINK_EVENT, listener);
-
-        return () => {
-            socket.off(EYE_BLINK_EVENT, listener);
-        };
-    }, []);
+    );
 
     return (
             <div className={classNames(styles.component)}>

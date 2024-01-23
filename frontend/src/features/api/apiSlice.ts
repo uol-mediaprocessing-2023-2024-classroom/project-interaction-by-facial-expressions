@@ -3,7 +3,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import axios, {AxiosProgressEvent} from 'axios';
 import {Image} from '../../common/types/Image';
 import {mapReturnedImageToImage} from './mapReturnedImageToImage';
-import {ReturnedImageSchema} from './ReturnedImageSchema';
+import {ReturnedImageSchema} from '../../common/schemas/ReturnedImageSchema';
 
 export const API_BASE_URL = 'http://localhost:9000';
 

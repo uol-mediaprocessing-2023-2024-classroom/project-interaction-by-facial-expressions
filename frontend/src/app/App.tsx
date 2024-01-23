@@ -1,10 +1,14 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
-import {z} from 'zod';
 import Spinner from '../common/components/spinner/Spinner';
-import {HEAD_POSE_EVENT, socket} from '../common/socket';
-import {Section} from '../common/types/Section';
+import {EyeBlinkEvent} from '../common/enums/EyeBlinkEvent';
+import {HeadPoseEvent} from '../common/enums/HeadPoseEvent';
+import {Section} from '../common/enums/Section';
+import {SocketEvent} from '../common/enums/SocketEvent';
+import {useSocketEventHook} from '../common/hooks/useSocketEventHook';
+import {ReturnedEyeBlinkEventSchema} from '../common/schemas/ReturnedEyeBlinkEventSchema';
+import {ReturnedHeadPoseEventSchema} from '../common/schemas/ReturnedHeadPoseEventSchema';
 import ActionLog from '../features/action-log/ActionLog';
 import {useGetImagesQuery} from '../features/api/apiSlice';
 import Camera from '../features/camera/Camera';
@@ -13,12 +17,8 @@ import Gallery from '../features/gallery/Gallery';
 import Help from '../features/help/Help';
 import UploadArea from '../features/upload-area/UploadArea';
 import styles from './App.less';
-import {setCurrentSection} from './appSlice';
-import {useAppDispatch} from './hooks';
-
-const ReturnedHeadPoseEventSchema = z.object({
-    direction: z.string()
-});
+import {selectIsSectionFocused, setCurrentSection, setIsSectionFocused} from './appSlice';
+import {useAppDispatch, useAppSelector} from './hooks';
 
 const App = () => {
     const dispatch = useAppDispatch();
@@ -41,30 +41,31 @@ const App = () => {
         Section.UPLOAD,
         Section.GALLERY
     ];
+    const isSectionFocused = useAppSelector(state => selectIsSectionFocused(state));
     const [isNavigationFloating, setIsNavigationFloating] = useState(false);
 
-    useEffect(() => {
-        const listener = (response: any) => {
-            const headPoseEvent = ReturnedHeadPoseEventSchema.parse(response);
-            if (headPoseEvent.direction === 'head-looks-left' && currentSectionIndex > 0) {
-                setCurrentSectionIndex(prevIndex => {
-                    dispatch(setCurrentSection(sections[--prevIndex]));
-                    return prevIndex;
-                });
-            } else if (headPoseEvent.direction === 'head-looks-right' && currentSectionIndex < sections.length - 1) {
-                setCurrentSectionIndex(prevIndex => {
-                    dispatch(setCurrentSection(sections[++prevIndex]));
-                    return prevIndex;
-                });
-            }
-        };
+    useSocketEventHook(
+            SocketEvent.HEAD_POSE,
+            (response: any) => {
+                if (isSectionFocused) {
+                    return;
+                }
 
-        socket.on(HEAD_POSE_EVENT, listener);
-
-        return () => {
-            socket.off(HEAD_POSE_EVENT, listener);
-        };
-    }, [currentSectionIndex]);
+                const headPoseEvent = ReturnedHeadPoseEventSchema.parse(response);
+                if (headPoseEvent.direction === HeadPoseEvent.LEFT && currentSectionIndex > 0) {
+                    setCurrentSectionIndex(prevIndex => {
+                        dispatch(setCurrentSection(sections[--prevIndex]));
+                        return prevIndex;
+                    });
+                } else if (headPoseEvent.direction === HeadPoseEvent.RIGHT && currentSectionIndex < sections.length - 1) {
+                    setCurrentSectionIndex(prevIndex => {
+                        dispatch(setCurrentSection(sections[++prevIndex]));
+                        return prevIndex;
+                    });
+                }
+            },
+            [currentSectionIndex, isSectionFocused]
+    );
 
     useEffect(() => {
         const navigationOffsetHeight = navigationSection.current?.offsetHeight ?? 0;
@@ -74,6 +75,28 @@ const App = () => {
             behavior: 'smooth'
         });
     }, [currentSectionIndex]);
+
+    useSocketEventHook(
+            SocketEvent.EYE_BLINK,
+            (response: any) => {
+                const eyeBlinkEvent = ReturnedEyeBlinkEventSchema.parse(response);
+                if (eyeBlinkEvent.which === EyeBlinkEvent.BOTH) {
+                    dispatch(setIsSectionFocused(!isSectionFocused));
+                }
+            },
+            [isSectionFocused]
+    );
+
+    useSocketEventHook(
+            SocketEvent.HEAD_POSE,
+            (response: any) => {
+                const headPoseEvent = ReturnedHeadPoseEventSchema.parse(response);
+                if (headPoseEvent.direction === HeadPoseEvent.UP) {
+                    dispatch(setIsSectionFocused(!isSectionFocused));
+                }
+            },
+            [isSectionFocused]
+    );
 
     useEffect(() => {
         const eventListener = () => {
@@ -104,24 +127,41 @@ const App = () => {
                             <section
                                     className={classNames(styles.section, styles.sticky, {[styles.shadow]: isNavigationFloating})}
                                     ref={navigationSection}>
-                                <div className={classNames(styles.content, styles.navigation, {[styles.focused]: currentSectionIndex === 0})}>
+                                <div className={classNames(
+                                        styles.content,
+                                        styles.navigation,
+                                        {[styles.focused]: currentSectionIndex === 0},
+                                        {[styles.fixed]: currentSectionIndex === 0 && isSectionFocused}
+                                )}>
                                     <Help/>
                                     <Camera/>
                                     <ActionLog/>
                                 </div>
                             </section>
                             <section className={styles.section} ref={carouselSection}>
-                                <div className={classNames(styles.content, {[styles.focused]: currentSectionIndex === 1})}>
+                                <div className={classNames(
+                                        styles.content,
+                                        {[styles.focused]: currentSectionIndex === 1},
+                                        {[styles.fixed]: currentSectionIndex === 1 && isSectionFocused}
+                                )}>
                                     <Carousel/>
                                 </div>
                             </section>
                             <section className={styles.section} ref={uploadAreaSection}>
-                                <div className={classNames(styles.content, {[styles.focused]: currentSectionIndex === 2})}>
+                                <div className={classNames(
+                                        styles.content,
+                                        {[styles.focused]: currentSectionIndex === 2},
+                                        {[styles.fixed]: currentSectionIndex === 2 && isSectionFocused}
+                                )}>
                                     <UploadArea/>
                                 </div>
                             </section>
                             <section className={styles.section} ref={gallerySection}>
-                                <div className={classNames(styles.content, {[styles.focused]: currentSectionIndex === 3})}>
+                                <div className={classNames(
+                                        styles.content,
+                                        {[styles.focused]: currentSectionIndex === 3},
+                                        {[styles.fixed]: currentSectionIndex === 3 && isSectionFocused}
+                                )}>
                                     <Gallery/>
                                 </div>
                             </section>

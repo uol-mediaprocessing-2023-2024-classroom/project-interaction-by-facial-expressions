@@ -77,6 +77,7 @@ const App = () => {
         });
     }, [currentSectionIndex]);
 
+    /* TODO: Perhaps this might not be a good decision and we should reverse it.
     useSocketEventHook(
             SocketEvent.EYE_BLINK,
             (response: any) => {
@@ -87,6 +88,7 @@ const App = () => {
             },
             [isSectionFocused]
     );
+    */
 
     useSocketEventHook(
             SocketEvent.HEAD_POSE,

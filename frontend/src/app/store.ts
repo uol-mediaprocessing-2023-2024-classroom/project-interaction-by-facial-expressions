@@ -3,6 +3,7 @@ import {apiSlice} from '../features/api/apiSlice';
 import carouselReducer from '../features/carousel/carouselSlice';
 import filterBarReducer from '../features/filter-bar/filterBarSlice';
 import manualModeSwitchReducer from '../features/manual-mode-switch/manualModeSwitchSlice';
+import overlayImageReducer from '../features/overlay-image/overlayImageSlice';
 import settingsMenuReducer from '../features/settings-menu/settingsMenuSlice';
 import appReducer from './appSlice';
 
@@ -13,6 +14,7 @@ export const store = configureStore({
         filterBar: filterBarReducer,
         manualModeSwitch: manualModeSwitchReducer,
         settingsMenu: settingsMenuReducer,
+        overlayImage: overlayImageReducer,
         [apiSlice.reducerPath]: apiSlice.reducer
     },
     middleware: getDefaultMiddleware =>

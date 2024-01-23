@@ -13,14 +13,14 @@ export const overlayImageSlice = createSlice({
     name: 'overlay-image',
     initialState,
     reducers: {
-        setIsShown: (state, action: PayloadAction<boolean>) => {
+        setIsOverlayImageShown: (state, action: PayloadAction<boolean>) => {
             state.isShown = action.payload;
         }
     }
 });
 
-export const {setIsShown} = overlayImageSlice.actions;
+export const {setIsOverlayImageShown} = overlayImageSlice.actions;
 
-export const selectIsShown = (state: RootState) => state.overlayImage.isShown;
+export const selectIsOverlayImageShown = (state: RootState) => state.overlayImage.isShown;
 
 export default overlayImageSlice.reducer;

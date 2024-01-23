@@ -10,7 +10,7 @@ import {ReturnedHeadPoseEventSchema} from '../../common/schemas/ReturnedHeadPose
 import {selectImages} from '../api/apiSlice';
 import {setCurrentIndex} from '../carousel/carouselSlice';
 import OverlayImage from '../overlay-image/OverlayImage';
-import {selectIsShown, setIsShown} from '../overlay-image/overlayImageSlice';
+import {selectIsOverlayImageShown, setIsOverlayImageShown} from '../overlay-image/overlayImageSlice';
 import styles from './Gallery.less';
 
 const Gallery = () => {
@@ -19,7 +19,7 @@ const Gallery = () => {
     const currentIndex = useAppSelector(state => state.carousel.currentIndex);
     const imageRefs: React.RefObject<HTMLDivElement>[] = useMemo(() => images.map(() => React.createRef()), [images]);
     const galleryRef = createRef<HTMLDivElement>();
-    const isOverlayImageShown = useAppSelector(state => selectIsShown(state));
+    const isOverlayImageShown = useAppSelector(state => selectIsOverlayImageShown(state));
 
     useEffect(() => {
         if (imageRefs[currentIndex] && galleryRef.current) {

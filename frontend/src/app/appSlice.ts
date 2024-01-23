@@ -9,7 +9,7 @@ export interface AppState {
 
 const initialState: AppState = {
     currentSection: Section.NAVIGATION,
-    isSectionFocused: false
+    isSectionFocused: true
 };
 
 export const appSlice = createSlice({

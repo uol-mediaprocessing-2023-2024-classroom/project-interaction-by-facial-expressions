@@ -51,19 +51,21 @@ const Gallery = () => {
     );
 
     return (
-            <div className={styles.component} ref={galleryRef}>
+            <div style={{position: 'relative'}}>
                 <OverlayImage/>
-                <div className={styles.gallery}>
-                    {(
-                            images.map((image, index) => (
-                                    <div key={image.id}
-                                         ref={imageRefs[index]}
-                                         className={classNames(styles.image, index == currentIndex ? styles.selected : null)}
-                                         onClick={() => dispatch(setCurrentIndex(index))}>
-                                        <img src={image.url} alt=""/>
-                                    </div>
-                            ))
-                    )}
+                <div className={styles.component} ref={galleryRef}>
+                    <div className={styles.gallery}>
+                        {(
+                                images.map((image, index) => (
+                                        <div key={image.id}
+                                             ref={imageRefs[index]}
+                                             className={classNames(styles.image, index == currentIndex ? styles.selected : null)}
+                                             onClick={() => dispatch(setCurrentIndex(index))}>
+                                            <img src={image.url} alt=""/>
+                                        </div>
+                                ))
+                        )}
+                    </div>
                 </div>
             </div>
     );

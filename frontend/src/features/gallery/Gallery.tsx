@@ -2,11 +2,11 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import {createRef, useEffect, useMemo} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
-import {EyeBlinkEvent} from '../../common/enums/EyeBlinkEvent';
+import {HeadPoseEvent} from '../../common/enums/HeadPoseEvent';
 import {Section} from '../../common/enums/Section';
 import {SocketEvent} from '../../common/enums/SocketEvent';
 import {useSocketEventOnFocusedSectionHook} from '../../common/hooks/useSocketEventOnFocusedSectionHook';
-import {ReturnedEyeBlinkEventSchema} from '../../common/schemas/ReturnedEyeBlinkEventSchema';
+import {ReturnedHeadPoseEventSchema} from '../../common/schemas/ReturnedHeadPoseEventSchema';
 import {selectImages} from '../api/apiSlice';
 import {setCurrentIndex} from '../carousel/carouselSlice';
 import OverlayImage from '../overlay-image/OverlayImage';
@@ -39,11 +39,11 @@ const Gallery = () => {
     }, [galleryRef, currentIndex]);
 
     useSocketEventOnFocusedSectionHook(
-            SocketEvent.EYE_BLINK,
+            SocketEvent.HEAD_POSE,
             (response: any) => {
-                const eyeBlinkEvent = ReturnedEyeBlinkEventSchema.parse(response);
-                if (eyeBlinkEvent.which === EyeBlinkEvent.BOTH) {
-                    dispatch(setIsShown(!isOverlayImageShown));
+                const headPoseEvent = ReturnedHeadPoseEventSchema.parse(response);
+                if (headPoseEvent.direction === HeadPoseEvent.DOWN) {
+                    dispatch(setIsOverlayImageShown(!isOverlayImageShown));
                 }
             },
             [isOverlayImageShown],

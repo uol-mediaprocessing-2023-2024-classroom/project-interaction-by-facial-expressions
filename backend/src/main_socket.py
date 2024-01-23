@@ -13,10 +13,10 @@ socketio = SocketIO(app, cors_allowed_origins='http://localhost:3000')
 
 @socketio.on('webcam-stream')
 def handle_camera(message):
-    mime_type, base64_data = message.split(",", 1)
+    mime_type, base64_data = message['screenshot'].split(",", 1)
     image_bytes = base64.b64decode(base64_data)
     opencv_image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
-    response = image_analyzer.analyze_image(socketio, opencv_image)
+    response = image_analyzer.analyze_image(socketio, opencv_image, message['faceDetectorBackend'])
     if response is not None:
         socketio.emit('canvas-update', response)
 

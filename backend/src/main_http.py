@@ -22,7 +22,15 @@ UPLOAD_FOLDER = os.getcwd() + '/images/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 sio = socketio.SimpleClient()
-sio.connect('http://localhost:9001')
+while True:
+    try:
+        sio.connect('http://localhost:9001')
+        if sio.connected:
+            print("Connected with socket server.")
+            break
+    except Exception as e:
+        print(f"Failed to connect with socket server, error: {str(e)}. Retrying in 1 second...")
+        time.sleep(1)
 
 
 @app.route('/images')

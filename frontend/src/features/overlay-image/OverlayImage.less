@@ -1,0 +1,19 @@
+@import "../gallery/Gallery";
+
+.component {
+  z-index: 9999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: @grid-gap-size 0;
+  height: calc(@column-height * @rows-shown + @grid-gap-size);
+  background-color: rgba(0, 0, 0, 0.4);
+
+  img {
+    height: 100%;
+    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.2);
+  }
+}

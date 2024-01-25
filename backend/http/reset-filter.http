@@ -1,0 +1,9 @@
+### POST request
+# Initiate the reset action for the image identified by the given id, which results in the deletion of the processed image.
+POST http://localhost:9000/process-image
+Content-Type: application/json
+
+{
+"id": "a6a53142-eabf-469a-b10d-6c87e6776120",
+"action": "reset"
+}

@@ -1,0 +1,33 @@
+@import "../../common/variables.less";
+
+.component {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+
+  .button {
+    cursor: pointer;
+    margin-left: 8px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    background-color: @accent-color;
+    color: #5b5b5b;
+
+    &:not(:last-of-type) {
+      margin-right: 8px;
+    }
+
+    &.disabled {
+      cursor: unset;
+      background-color: gray;
+    }
+
+    &.focused {
+      transform: scale(1.1);
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+### POST request
+# Apply the black-and-white filter to the image identified by the given id.
+POST http://localhost:9000/process-image
+Content-Type: application/json
+
+{
+  "id": "a6a53142-eabf-469a-b10d-6c87e6776120",
+  "action": "black-and-white"
+}

@@ -19,7 +19,7 @@ face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, refin
 
 head_pose_debouncer = Debouncer(limit=15)
 eye_blink_debouncer = Debouncer(limit=10)
-face_emotion_debouncer = Debouncer(limit=10)
+face_emotion_debouncer = Debouncer(limit=10, start_in_a_thread=True)
 
 
 def analyze_image(socketio: SocketIO, image: cv2.typing.MatLike, face_detector_backend: str) -> Union[None, dict]:

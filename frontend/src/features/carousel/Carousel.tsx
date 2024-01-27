@@ -12,14 +12,12 @@ import {mod} from '../../common/utils/mod';
 import {ProcessImageAction, selectImages, useProcessImageMutation} from '../api/apiSlice';
 import FilterBar from '../filter-bar/FilterBar';
 import {selectFocusedFilter} from '../filter-bar/filterBarSlice';
-import {selectIsChecked} from '../manual-mode-switch/manualModeSwitchSlice';
 import styles from './Carousel.less';
 import {setCurrentIndex} from './carouselSlice';
 
 const Carousel = () => {
     const dispatch = useAppDispatch();
     const images = useAppSelector(state => selectImages(state));
-    const isManualModeActivated = useAppSelector(state => selectIsChecked(state));
     const [processImage] = useProcessImageMutation();
     const currentIndex = useAppSelector(state => state.carousel.currentIndex);
     const currentImage = images[currentIndex];
@@ -70,7 +68,7 @@ const Carousel = () => {
                     </div>
                     <div className={styles.currentImage}>
                         <img src={currentImage?.url} alt=""/>
-                        {isManualModeActivated && <FilterBar/>}
+                        <FilterBar/>
                     </div>
                     <div className={classNames(styles.preview, styles.right)}>
                         <div className={styles.content}>

@@ -166,7 +166,6 @@ const App = () => {
                                     <Gallery/>
                                 </div>
                             </section>
-                            {/*<ManualModeSwitch/>*/}
                             <SettingsMenu/>
                         </> : null
                 }

@@ -19,7 +19,7 @@ face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, refin
 
 head_pose_debouncer = Debouncer(limit=15)
 eye_blink_debouncer = Debouncer(limit=10)
-face_emotion_debouncer = Debouncer(limit=10, start_in_a_thread=True)
+face_emotion_debouncer = Debouncer(limit=10, start_in_a_thread=False)
 
 
 def analyze_image(socketio: SocketIO, image: cv2.typing.MatLike, face_detector_backend: str) -> Union[None, dict]:
@@ -35,7 +35,13 @@ def analyze_image(socketio: SocketIO, image: cv2.typing.MatLike, face_detector_b
 
     handle_head_pose(socketio, head_pose_result['direction'])
     handle_eye_blink(socketio, detect_eye_blink(image, results))
+
+    start_time = time.perf_counter_ns()
     face_emotion_debouncer(lambda: handle_face_emotion(socketio, detect_face_emotion(image, face_detector_backend)))
+    end_time = time.perf_counter_ns()
+    elapsed_time = end_time - start_time
+    elapsed_time_in_seconds = elapsed_time / 1e9
+    print(f"Elapsed Time: {elapsed_time_in_seconds:.6f} seconds")
 
     return {
         'headPose': head_pose_result,

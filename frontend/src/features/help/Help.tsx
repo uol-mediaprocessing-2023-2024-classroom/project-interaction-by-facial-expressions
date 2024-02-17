@@ -14,7 +14,7 @@ const Help = () => {
                             <>
                                 <h3>Navigate through the page:</h3>
                                 <ul>
-                                    <li>Unlock area/Lock area: Tilt you head up (or close both eyes)</li>
+                                    <li>Unlock area/Lock area: Tilt your head up (or close both eyes)</li>
                                     <li>Scroll to next area: tilt your head to the right</li>
                                     <li>Scroll to previous area: tilt your head to the left</li>
                                 </ul>
@@ -24,7 +24,7 @@ const Help = () => {
                             <>
                                 <h3>Navigate through the page:</h3>
                                 <ul>
-                                    <li>Unlock area/Lock area: Tilt you head up (or close both eyes)</li>
+                                    <li>Unlock area/Lock area: Tilt your head up (or close both eyes)</li>
                                     <li>Scroll to next area: tilt your head to the right</li>
                                     <li>Scroll to previous area: tilt your head to the left</li>
                                 </ul>
@@ -46,7 +46,7 @@ const Help = () => {
                             <>
                                 <h3>Navigate through the page:</h3>
                                 <ul>
-                                    <li>Unlock area/Lock area: Tilt you head up (or close both eyes)</li>
+                                    <li>Unlock area/Lock area: Tilt your head up (or close both eyes)</li>
                                     <li>Scroll to next area: tilt your head to the right</li>
                                     <li>Scroll to previous area: tilt your head to the left</li>
                                 </ul>
@@ -57,7 +57,7 @@ const Help = () => {
                             <>
                                 <h3>Navigate through the page:</h3>
                                 <ul>
-                                    <li>Unlock area/Lock area: Tilt you head up (or close both eyes)</li>
+                                    <li>Unlock area/Lock area: Tilt your head up (or close both eyes)</li>
                                     <li>Scroll to next area: tilt your head to the right</li>
                                     <li>Scroll to previous area: tilt your head to the left</li>
                                 </ul>

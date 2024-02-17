@@ -24,7 +24,6 @@ face_emotion_debouncer = Debouncer(limit=10, start_in_a_thread=True)
 
 def analyze_image(socketio: SocketIO, image: cv2.typing.MatLike, face_detector_backend: str) -> Union[None, dict]:
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    image_height, image_width, _ = image.shape
 
     results = face_mesh.process(image)
 
